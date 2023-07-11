@@ -1,10 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { TodoForm } from "../modules/todo/todo.form";
+import { EditTodoForm } from "../modules/todo/edit-todo.form";
 
 
 export const TodoScreen = ()=>{
     const [tasks,setTasks] = useState([]);
+    const [selectedTask, setSelectedTask] = useState({
+        _id: '',
+        title: '',
+        status:''
+    });
 
     useEffect(()=>{
         (async ()=>{
@@ -28,12 +34,33 @@ export const TodoScreen = ()=>{
             console.log(e);
            }
     }
+    const updateTask = async (_id)=>{
+        try{
+            const res = await axios.put("http://localhost:8081/todo/"+selectedTask._id, selectedTask);
+            await loadTasks();
+            resetEditForm();
+           }catch(e){
+            console.log(e);
+           }
+    }
 
-
+    const resetEditForm=()=>{
+        setSelectedTask({
+            _id:'',
+            title:'',
+            status:''
+        })
+    }
     const loadTasks = async ()=>{
         const res = await axios.get('http://localhost:8081/todo');
         setTasks(res.data.data)
     }
+
+    const loadSelectedTask =async (id)=>{
+        const res = await axios.get("http://localhost:8081/todo/"+id);
+        setSelectedTask(res.data.data);
+    } 
+
 return <section>
     <h1>TodoScreen</h1>
     <TodoForm submit={createTask}/>
@@ -47,12 +74,13 @@ return <section>
                 <div className={"card"} key={key}>
                     <div>{v.title}</div>
                     <p>{v.status}</p>
-                    <button>Edit Task</button>
+                    <button onClick={()=>loadSelectedTask(v._id)}>Edit Task</button>
                     <button onClick={()=>deleteTask(v._id)}>Delete Task</button>
                     
                 </div>
             ))}
         </div>
     </div> 
+    <EditTodoForm selectedTask={selectedTask} setSelectedTask={setSelectedTask} submitForm={updateTask}/>
 </section>
 }
