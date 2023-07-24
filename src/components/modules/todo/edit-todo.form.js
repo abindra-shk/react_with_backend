@@ -4,6 +4,7 @@ export const EditTodoForm  =(props)=>{
     const submitForm=async (e)=>{
         e.preventDefault();
         await props.submitForm(props.selectedTask)
+        props.setMode('add');
     }
 
     const formHandler=(e)=>{
@@ -12,10 +13,15 @@ export const EditTodoForm  =(props)=>{
             [e.target.name]: e.target.value
         })
     }
-    return <form onSubmit={submitForm}>
+    return <form className="common-form" onSubmit={submitForm}>
         <input value={props.selectedTask._id} name="_id" placeholder="Enter id" disabled required onChange={formHandler}/>
         <input value={props.selectedTask.title} name="title" placeholder="Enter title" required onChange={formHandler}/>
-        <input value={props.selectedTask.status} name="status" placeholder="Enter status" required onChange={formHandler}/>
+        
+        <select type="text" name="status" value={props.selectedTask.status} onChange={formHandler}>
+            <option value="Todo">To do</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Done">Done</option>
+        </select>
         <button type="submit" disabled={props.selectedTask.id ===''}>Submit</button>
     </form>
 }
