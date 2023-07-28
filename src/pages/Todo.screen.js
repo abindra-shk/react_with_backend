@@ -6,6 +6,7 @@ import { TaskList } from "../components/modules/todo/TaskList";
 import { Nav } from "../components/partials/Nav";
 import { useSelector } from "react-redux";
 import { loginState } from "../store/user/reducer";
+import baseAxios from "../plugins/axios";
 
 export const TodoScreen = ()=>{
     const [tasks,setTasks] = useState([]);
@@ -82,14 +83,14 @@ export const TodoScreen = ()=>{
         })
     }
     const loadTasks = async ()=>{
-        const res = await axios.get('http://localhost:8081/todo');
-        setTasks(res.data.data)
+        const res = await baseAxios.get('http://localhost:8081/todo');
+        setTasks(res.data)
     }
 
     const loadSelectedTask =async (id)=>{
         setMode('edit');
-        const res = await axios.get("http://localhost:8081/todo/"+id);
-        setSelectedTask(res.data.data);
+        const res = await baseAxios.get("http://localhost:8081/todo/"+id);
+        setSelectedTask(res.data);
     } 
 
     const loadByStatus = async (status) => {

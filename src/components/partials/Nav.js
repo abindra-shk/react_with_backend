@@ -8,13 +8,11 @@ export const Nav = (props) => {
     const currentState = useSelector(loginState)
     return<>
         <nav>
-            <div class="logo-area">
-    
-            </div>
+
             <div className="nav-items">
                 <div className="search">
                     <div>
-                        <i class="material-icons">search</i>
+                        <i className="material-icons">search</i>
                     </div>
                     <input type="text" placeholder={"Quick search"} onChange={props.changeKeyword}/>
                 </div>

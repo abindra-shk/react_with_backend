@@ -1,13 +1,20 @@
 import React from 'react'
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
 import { TodoScreen } from '../pages/Todo.screen'
 import { LoginForm } from '../components/modules/user/login'
-
+import { useSelector } from 'react-redux'
+import { getToken } from '../utils/helpers/tokenStorage.helper'
 const AppRouter = () => {
+    const isLoggedIn = useSelector(state=>state.authReducer.isLoggedIn || !!getToken())
   return (
     <Routes>
-        <Route path='/' element={<LoginForm/>} />
+        {isLoggedIn? <>
         <Route path='/todo' element={<TodoScreen/>} />
+        <Route path='*' element={<Navigate to='/todo'/>} />
+        </>:<>
+        <Route path='/' element={<LoginForm/>} />
+        <Route path='*' element={<Navigate to='/'/>} />
+        </>}
     </Routes>
   )
 }

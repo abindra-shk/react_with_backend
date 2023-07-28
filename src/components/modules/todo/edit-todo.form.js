@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export const EditTodoForm  =(props)=>{
+    console.log(props)
     const submitForm=async (e)=>{
         e.preventDefault();
         await props.submitForm(props.selectedTask)

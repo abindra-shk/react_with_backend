@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { loginState } from "../../../store/user/reducer";
 import { useNavigate } from "react-router";
+import { authenticateUser } from "../../../store/user/actions";
 
 export const LoginForm  =(props)=>{
     const [user,setUser] = useState({ username:'',password:''})
@@ -14,20 +15,19 @@ export const LoginForm  =(props)=>{
 
     const navigate = useNavigate()
 
-    console.log(currentState)
-
     const submitForm=async (e)=>{
         e.preventDefault();
         try{    
-            const res = await axios.post("http://localhost:8081/user/login",user);
+            // const res = await axios.post("http://localhost:8081/user/login",user);
 
-            // console.log(res)
-            dispatch({type: 'SET_USERNAME', payload: res.data.data.username})
+            // // console.log(res)
+            // dispatch({type: 'SET_USERNAME', payload: res.data.data.username})
 
             
-            // console.log('res ' , res);
-            localStorage.setItem("username",res.data.data.username);
-            console.log(localStorage.getItem("username"));
+            // // console.log('res ' , res);
+            // localStorage.setItem("username",res.data.data.username);
+            // console.log(localStorage.getItem("username"));
+            dispatch(authenticateUser(user))
             navigate('/todo')
            }catch(e){
             console.log(e);
